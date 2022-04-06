@@ -1,0 +1,23 @@
+$TTL 86400
+@       IN      SOA     gateway.playground.io.     root.playground.io (
+        2011071001      ;Serial
+        3600    ;Refresh
+        1800    ;Retry
+        604800  ;Expire
+        86400   ;Minimum TTL
+)
+
+; Gateway reverse lookup
+@           IN  NS  gateway.playground.io.
+gateway     IN  A   10.10.100.1
+1           IN  PTR gateway.playground.io.
+
+; Jenkins reverse lookup
+@           IN  NS  jenkins.playground.io.
+jenkins      IN  A   10.10.100.100
+100         IN  PTR jenkins.playground.io.
+
+; PVE01 reverse lookup
+@           IN  NS  pve01.playground.io.
+pve01       IN  A   10.10.100.254
+254         IN  PTR pve01.playground.io.

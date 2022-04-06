@@ -1,0 +1,77 @@
+---
+- name: install necessary packages 
+  dnf:
+    name:
+      - dhcp-server
+      - bind
+      - bind-utils
+      - iptables
+      - iptables-services
+      - git
+      - python3
+      - python3-pip
+- name: copy files to each specific directory
+  copy:
+    src: files/dhcpd.conf
+    dest: /etc/dhcp/dhcpd.conf
+  register: dhcpd_edit
+- name: for named
+  copy:
+    src: files/named.conf
+    dest: /etc/named.conf
+  register: named_edit
+- name: forward rule
+  copy:
+    src: "{{ item }}"
+    dest: /var/named/
+  with_items:
+    - files/playground.forward
+    - files/playground.reverse
+  register: dns_edit
+- name: copy and save iptables
+  copy:
+    src: files/iptables
+    dest: /etc/sysconfig/iptables
+- name: edit sysctl, enable ip forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+- name: start services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  with_items:
+    - dhcpd
+    - named
+    - iptables
+- name: restart dhcpd server if edit was done on dhcpd.conf
+  service:
+    name: dhcpd
+    state: restarted
+  when: dhcpd_edit.changed
+- name: restart named server if edit was done on named.conf or forward/reverse lookup files
+  service:
+    name: named
+    state: restarted
+  when: named_edit.changed or dns_edit.changed
+- name: update pip3
+  pip:
+    name: pip
+    state: latest
+- name: get git
+  git:
+    clone: true
+    update: true
+    repo: https://github.com/jdbalgos/pve-infrastructure-config.git
+    dest: "/root/pve-ansible"
+- name: install ansible
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - ansible
+    - proxmoxer
