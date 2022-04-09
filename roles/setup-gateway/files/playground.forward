@@ -18,9 +18,9 @@ gateway     IN  A   10.10.100.1
 jenkins      IN  A   10.10.100.100
 
 ; Docker forward lookup
-@           IN  NS  docker.playground.io.
+@           IN  NS  build.playground.io.
 @           IN  A   10.10.100.101
-docker      IN  A   10.10.100.101
+build       IN  A   10.10.100.101
 
 ; PVE01 forward lookup
 @           IN  NS  pve01.playground.io.

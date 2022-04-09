@@ -14,8 +14,13 @@ gateway     IN  A   10.10.100.1
 
 ; Jenkins reverse lookup
 @           IN  NS  jenkins.playground.io.
-jenkins      IN  A   10.10.100.100
+jenkins     IN  A   10.10.100.100
 100         IN  PTR jenkins.playground.io.
+
+; Build reverse lookup
+@           IN  NS  build.playground.io.
+build       IN  A   10.10.100.101
+101         IN  PTR build.playground.io.
 
 ; PVE01 reverse lookup
 @           IN  NS  pve01.playground.io.
