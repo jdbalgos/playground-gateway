@@ -22,6 +22,11 @@ jenkins     IN  A   10.10.100.100
 build       IN  A   10.10.100.101
 101         IN  PTR build.playground.io.
 
+; Test reverse lookup
+@           IN  NS  test.playground.io.
+test        IN  A   10.10.100.102
+102         IN  PTR test.playground.io.
+
 ; PVE01 reverse lookup
 @           IN  NS  pve01.playground.io.
 pve01       IN  A   10.10.100.254
